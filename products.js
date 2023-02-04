@@ -11,8 +11,8 @@ const site = "https://vue3-course-api.hexschool.io/v2/";
 const api_path = "sui-vue";
 
 //全域變數modal宣告在外層(全域都需要使用到)
-let productModal = {};
-let delProductModal = {};
+let productModal = null;
+let delProductModal = null;
 
 //vue app 應用程式
 const app = createApp({
@@ -127,6 +127,11 @@ const app = createApp({
     //建立刪除產品的視窗
     delProductModal = new bootstrap.Modal("#delProductModal");
   },
+});
+//新增編輯的modal-全域註冊modal：product-modal(這樣任何一個 子元件都可以使用)
+app.component("product-modal", {
+  props: ["tempProduct", "updateProduct", "isNew"],
+  template: "#product-modal-template", //這裡要填入x-template2一樣的id值
 });
 
 //生成畫面
