@@ -133,6 +133,12 @@ app.component("product-modal", {
   props: ["tempProduct", "updateProduct", "isNew"],
   template: "#product-modal-template", //這裡要填入x-template2一樣的id值
 });
+//刪除modalㄦ的元件全域註冊modal：delete-modal(這樣任何一個 子元件都可以使用)
+app.component("delete-modal", {
+  props: ["tempProduct", "deleteProduct"],
+  //不要忘記加＃連結x-template的id屬性
+  template: "#delProduct-modal-template",
+});
 
 //生成畫面
 app.mount("#app");

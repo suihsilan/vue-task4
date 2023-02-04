@@ -70,7 +70,7 @@
           @change-page="getProducts"
         ></pagination>
       </div>
-      <!-- 編輯與新增的Modal -->
+      <!-- 編輯與新增元件的Modal -->
       <div
         id="productModal"
         ref="productModal"
@@ -82,6 +82,7 @@
         <product-modal
           :temp-product="tempProduct"
           :update-product="updateProduct"
+          :is-new="isNew"
         ></product-modal>
       </div>
       <!-- 刪除的Modal -->
@@ -93,51 +94,22 @@
         aria-labelledby="delProductModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
-          <div class="modal-content border-0">
-            <div class="modal-header bg-danger text-white">
-              <h5 id="delProductModalLabel" class="modal-title">
-                <span>刪除產品</span>
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              是否刪除
-              <strong class="text-danger">{{tempProduct.title}}</strong>
-              商品(刪除後將無法恢復)。
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                data-bs-dismiss="modal"
-              >
-                取消
-              </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                @click="deleteProduct"
-              >
-                確認刪除
-              </button>
-            </div>
-          </div>
-        </div>
+        <delete-modal
+          :temp-product="tempProduct"
+          :delete-product="deleteProduct"
+        ></delete-modal>
       </div>
       <!-- Modal -->
     </div>
+    <!-- 新增與編輯元件的x-template -->
     <script type="text/x-template" id="product-modal-template">
       <div class="modal-dialog modal-xl">
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
             <h5 id="productModalLabel" class="modal-title">
-              <span>新增產品</span>
+              <!--這裡加入判斷開啟的modal是新增產品還是編輯產品-->
+              <span v-if="isNew">新增產品</span>
+              <span v-else>編輯產品</span>
             </h5>
             <button
               type="button"
@@ -311,6 +283,45 @@
           </div>
         </div>
       </div>
+    </script>
+    <!-- 刪除modal元件的x-template -->
+    <script type="text/x-template" id="delProduct-modal-template">
+      <div class="modal-dialog">
+          <div class="modal-content border-0">
+            <div class="modal-header bg-danger text-white">
+              <h5 id="delProductModalLabel" class="modal-title">
+                <span>刪除產品</span>
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              是否刪除
+              <strong class="text-danger">{{tempProduct.title}}</strong>
+              商品(刪除後將無法恢復)。
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                取消
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click="deleteProduct"
+              >
+                確認刪除
+              </button>
+            </div>
+          </div>
+        </div>
     </script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js"
