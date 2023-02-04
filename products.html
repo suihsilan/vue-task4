@@ -39,8 +39,11 @@
               <td>{{ product.origin_price }}</td>
               <td>{{ product.price }}</td>
               <td>
-                <span class="text-success" v-if="product.is_enabled">啟用</span>
-                <span v-else>未啟用</span>
+                <span class="text-success"
+                  >{{ product.is_enabled ?'啟用' : '未啟用' }}</span
+                >
+                <!-- <span class="text-success" v-if="product.is_enabled">啟用</span>
+                <span v-else>未啟用</span> -->
               </td>
               <td>
                 <div class="btn-group">
@@ -108,8 +111,9 @@
           <div class="modal-header bg-dark text-white">
             <h5 id="productModalLabel" class="modal-title">
               <!--這裡加入判斷開啟的modal是新增產品還是編輯產品-->
-              <span v-if="isNew">新增產品</span>
-              <span v-else>編輯產品</span>
+              <span>{{ isNew ? '新增產品' : '編輯產品' }}</span>
+              <!-- <span v-if="isNew">新增產品</span>
+              <span v-else>編輯產品</span> -->
             </h5>
             <button
               type="button"
@@ -141,26 +145,26 @@
                       :key="key +123">
                       <input type="text" class="form-control"  v-model="tempProduct.imagesUrl[key]"/>
                       <img
-                        v-bind:src="tempProduct.imagesUrl[key]"
+                        :src="tempProduct.imagesUrl[key]"
                         alt=""
                         class="img-fluid mb-2"
                       />
                     </template>
-                    <button
-                      v-if="!tempProduct.imagesUrl.length ||
-                      tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]"
-                      class="btn btn-outline-primary btn-sm d-block w-100"
+                    <div v-if="!tempProduct.imagesUrl.length ||
+                      tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]">
+                      <button class="btn btn-outline-primary btn-sm d-block w-100"
                       @click="tempProduct.imagesUrl.push('')"
                     >
                       新增圖片
                     </button>
-                    <button
-                      v-else
-                      class="btn btn-outline-danger btn-sm d-block w-100"
+                    </div>
+                    <div v-else>
+                      <button class="btn btn-outline-danger btn-sm d-block w-100"
                       @click="tempProduct.imagesUrl.pop('')"
                     >
                       刪除圖片
                     </button>
+                    </div>
                   </div>
                 </div>
               </div>

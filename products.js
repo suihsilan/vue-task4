@@ -11,6 +11,7 @@ const site = "https://vue3-course-api.hexschool.io/v2/";
 const api_path = "sui-vue";
 
 //全域變數modal宣告在外層(全域都需要使用到)
+//建議可以將變數 productModal、delProductModal 初始值賦予為 null，null 會更適合做為預設空值。
 let productModal = null;
 let delProductModal = null;
 
@@ -27,6 +28,18 @@ const app = createApp({
     };
   },
   methods: {
+    checkAdmin() {
+      const url = `${site}api/user/check`;
+      axios
+        .post(url)
+        .then(() => {
+          this.getProducts();
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+          window.location = "index.html";
+        });
+    },
     getProducts(page = 1) {
       //參數預設值為1
       const url = `${site}api/${api_path}/admin/products/?page=${page}`;
@@ -37,11 +50,12 @@ const app = createApp({
           this.products = res.data.products;
           //透過api取的分頁資料存入pages
           this.page = res.data.pagination;
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {
           //將錯誤情況的訊息明確顯示出來
-          console.log(err.data.message);
+          alert(err.response.data.message);
+          // console.log(err.data.message);
         });
     },
     //在openModal(status)加入status參數做增編刪情況判斷
@@ -81,7 +95,8 @@ const app = createApp({
           productModal.hide();
         })
         .catch((err) => {
-          console.log(err.data.message);
+          alert(err.response.data.message);
+          // console.log(err.data.message);
         });
     },
     deleteProduct() {
@@ -97,7 +112,8 @@ const app = createApp({
           delProductModal.hide();
         })
         .catch((err) => {
-          console.log(err.data.message);
+          alert(err.response.data.message);
+          // console.log(err.data.message);
         });
     },
   },
@@ -113,11 +129,11 @@ const app = createApp({
       ?.split("=")[1];
     //axios headers
     axios.defaults.headers.common["Authorization"] = cookieValue;
-    //觸發get總資料
-    this.getProducts();
+    //進入後台時需要先使用 user/check 這支 API 來驗證是否登入成功，驗證成功後才呼叫 getProducts 取出產品資料並渲染，驗證失敗則跳轉到登入頁面
+    this.checkAdmin();
 
     //bootstrap 方法
-    console.log(bootstrap);
+    // console.log(bootstrap);
     //1.初始化/實體化 new
     //2. 呼叫方法 .show() ｜ .hide()
     //建立新增/編輯產品的視窗
